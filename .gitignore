@@ -1,0 +1,30 @@
+# Python virtual environment
+venv/
+
+# Python cache
+__pycache__/
+
+
+# Environment variables
+.env
+
+
+
+# Vector store
+data/chroma_db/
+
+# Node-related (in case you ever use frontend)
+# node_modules/
+# package-lock.json
+# package.json
+
+
+# Temporary/testing scripts (uncomment if you want to ignore them)
+llm_client.py
+test_ask.py
+
+
+build_vectorstore.py
+ask.py
+
+# load_data.py

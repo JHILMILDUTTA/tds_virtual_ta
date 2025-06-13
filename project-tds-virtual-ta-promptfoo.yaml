@@ -1,0 +1,83 @@
+# providers:
+#   - id: http://localhost:8000/ask
+#     config:
+#       method: POST
+#       headers:
+#         Content-Type: application/json
+#       body: |
+#         {
+#           "question": "{{prompt}}",
+#           "context": "{{context}}",
+#           "user": "{{user}}"
+
+#         }
+
+
+# prompts:
+#   - id: deadline
+#     raw: What is the deadline for Assignment 2?
+#     expected: The deadline is June 15.
+
+#   - id: syllabus
+#     raw: What topics are covered in the syllabus?
+#     expected: The syllabus includes data science fundamentals, ML algorithms, and deployment.
+
+#   - id: project
+#     raw: When is Project 1 due?
+#     expected: Project 1 is due on June 10.
+
+# providers:
+#   - id: http://127.0.0.1:8000/
+#     config:
+#       method: POST
+#       headers:
+#         Content-Type: application/json
+#       body: |
+#         {
+#           "question": "{{prompt}}",
+#           "context": "{{context}}"
+#         }
+#       raw: true
+
+
+providers:
+  - id: http://127.0.0.1:8000/ask
+    label: Local FastAPI
+    responseParser: json.answer
+    config:
+      url: http://127.0.0.1:8000/ask
+      method: POST
+      headers:
+        Content-Type: application/json
+      body: |
+        {
+          "question": "{{prompt}}"
+        }
+
+prompts:
+  - "{{prompt}}"
+
+tests:
+  - name: Model usage confusion
+    vars:
+      prompt: >
+        The question asks to use gpt-3.5-turbo-0125 model but the ai-proxy provided by Anand sir only supports gpt-4o-mini. So should we just use gpt-4o-mini or use the OpenAI API for gpt-3.5 turbo?
+    assert:
+      - type: contains
+        value: gpt-4o-mini
+
+  - name: SRS + Bonus display
+    vars:
+      prompt: >
+        If a student scores 10/10 on GA4 as well as a bonus, how would it appear on the dashboard?
+    assert:
+      - type: contains
+        value: bonus mark
+
+  - name: Docker recommendation
+    vars:
+      prompt: >
+        I know Docker but have not used Podman before. Should I use Docker for this course?
+    assert:
+      - type: contains
+        value: Docker CE
