@@ -95,16 +95,16 @@ import requests
 import os
 from langchain_huggingface import HuggingFaceEmbeddings  
 
-import os, zipfile
+# import os, zipfile
 
-DB_ZIP = "data/chroma_db.zip"
-DB_DIR = "data/chroma_db"
+# DB_ZIP = "data/chroma_db.zip"
+# DB_DIR = "data/chroma_db"
 
-if not os.path.exists(DB_DIR):
-    print("Unzipping chroma DB...")
-    with zipfile.ZipFile(DB_ZIP, 'r') as zip_ref:
-        zip_ref.extractall("data")
-    print("✅ Unzipped chroma DB.")
+# if not os.path.exists(DB_DIR):
+#     print("Unzipping chroma DB...")
+#     with zipfile.ZipFile(DB_ZIP, 'r') as zip_ref:
+#         zip_ref.extractall("data")
+#     print("✅ Unzipped chroma DB.")
 
 
 
@@ -188,6 +188,11 @@ def ask_question(request: QuestionRequest):
 
     return {"answer": answer, "links": links}
     # return answer
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 10000))  # Render sets $PORT
+    uvicorn.run("app:app", host="0.0.0.0", port=port)
 
 
 # if __name__ == "__main__":
