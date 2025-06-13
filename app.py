@@ -1,90 +1,3 @@
-# from fastapi import FastAPI
-# from pydantic import BaseModel
-# from langchain_community.vectorstores import Chroma
-# from langchain_community.embeddings import HuggingFaceEmbeddings
-
-# # Initialize embeddings model
-# embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-
-# # Load the existing Chroma vectorstore from disk
-# vectorstore = Chroma(persist_directory="./data/chroma_db", embedding_function=embedding_model)
-
-# # Create a retriever
-# retriever = vectorstore.as_retriever()
-
-
-# app = FastAPI()
-
-# class QuestionRequest(BaseModel):
-#     question: str
-# from fastapi import FastAPI
-# from pydantic import BaseModel
-# from langchain_community.vectorstores import Chroma
-# from langchain_community.embeddings import HuggingFaceEmbeddings
-# import logging
-
-# # Setup logging
-# logging.basicConfig(level=logging.INFO)
-
-# # Initialize embeddings model
-# embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-
-# # Load the existing Chroma vectorstore from disk
-# vector_db = Chroma(persist_directory="./data/chroma_db", embedding_function=embedding_model)
-
-# app = FastAPI()
-
-# class QueryRequest(BaseModel):
-#     question: str
-
-
-# @app.post("/query")
-# async def query_endpoint(request: QueryRequest):
-#     try:
-#         question = request.question
-#         results = vector_db.similarity_search_with_score(question, k=3)
-
-#         # Create answer text by combining snippets (can replace later with LLM output)
-#         answer_parts = []
-#         seen_snippets = set()
-#         for doc, score in results:
-#             snippet = doc.page_content.replace("\n", " ").strip()
-#             snippet = snippet[:200]  # limit length per snippet
-#             if snippet not in seen_snippets:
-#                 answer_parts.append(snippet)
-#                 seen_snippets.add(snippet)
-#         generated_answer_text = " ".join(answer_parts).strip()
-
-#         # Build links list with content and title
-#         links = []
-#         for doc, score in results:
-#             url = doc.metadata.get("source_url") or doc.metadata.get("url") or "https://default-url.com"
-#             content = doc.page_content.replace("\n", " ")[:500]
-#             links.append({"url": url,  "content": content})
-
-#         # Remove duplicate links based on URL
-#         unique_links = []
-#         seen_urls = set()
-#         for link in links:
-#             if link["url"] not in seen_urls:
-#                 unique_links.append(link)
-#                 seen_urls.add(link["url"])
-#         links = unique_links
-
-#         response = {
-#             "answer": generated_answer_text if generated_answer_text else "No answer available.",
-#             "links": links
-#         }
-
-#         return response
-
-#     except Exception as e:
-#         logging.error(f"Error in query endpoint: {e}")
-#         return {"error": "An error occurred while processing your request."}
-
-
-
-
 from fastapi import FastAPI
 from pydantic import BaseModel
 from langchain_community.vectorstores import Chroma
@@ -189,10 +102,10 @@ def ask_question(request: QuestionRequest):
     return {"answer": answer, "links": links}
     # return answer
 
-if __name__ == "__main__":
-    import uvicorn
-    port = int(os.environ.get("PORT", 10000))  # Render sets $PORT
-    uvicorn.run("app:app", host="0.0.0.0", port=port)
+# if __name__ == "__main__":
+#     import uvicorn
+#     port = int(os.environ.get("PORT", 10000))  # Render sets $PORT
+#     uvicorn.run("app:app", host="0.0.0.0", port=port)
 
 
 # if __name__ == "__main__":
