@@ -12,6 +12,9 @@ __pycache__/
 
 # Vector store
 data/chroma_db/
+data/chroma_db/index
+data/chroma_db/*.lock
+
 
 # Node-related (in case you ever use frontend)
 # node_modules/

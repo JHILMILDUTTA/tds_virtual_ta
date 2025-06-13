@@ -95,23 +95,24 @@ import requests
 import os
 from langchain_huggingface import HuggingFaceEmbeddings  
 
-# import zipfile
+import os, zipfile
 
-# DB_DIR = "data/chroma_db"
-# ZIP_PATH = "chroma_db.zip"
+DB_ZIP = "data/chroma_db.zip"
+DB_DIR = "data/chroma_db"
 
-# # Unzip only if DB directory doesn't exist
-# if not os.path.exists(DB_DIR):
-#     print("Unzipping chroma_db.zip...")
-#     with zipfile.ZipFile(ZIP_PATH, 'r') as zip_ref:
-#         zip_ref.extractall("data")
-#     print("✅ Unzipped successfully.")
+if not os.path.exists(DB_DIR):
+    print("Unzipping chroma DB...")
+    with zipfile.ZipFile(DB_ZIP, 'r') as zip_ref:
+        zip_ref.extractall("data")
+    print("✅ Unzipped chroma DB.")
+
+
 
 
 
 # Load environment variables
 load_dotenv()
-API_KEY = os.getenv("AI_PROXY_API_KEY")
+API_KEY = os.getenv("AIPROXY_TOKEN")
 
 if not API_KEY:
     raise ValueError("API key not found! Set AI_PROXY_API_KEY in .env")
@@ -121,7 +122,9 @@ app = FastAPI()
 
 # Load Chroma DB
 DB_DIR = "data/chroma_db"
-embedding_function = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+# embedding_function = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+embedding_function = HuggingFaceEmbeddings(model_name="sentence-transformers/paraphrase-MiniLM-L3-v2")
+
 # embedding_function=HuggingFaceEmbeddings(model_name="sentence-transformers/paraphrase-MiniLM-L3-v2")
 
 vectorstore = Chroma(persist_directory=DB_DIR, embedding_function=embedding_function)
@@ -131,6 +134,8 @@ retriever = vectorstore.as_retriever(search_kwargs={"k": 2 })
 # Input model for the /ask endpoint
 class QuestionRequest(BaseModel):
     question: str
+
+
 
 
 @app.post("/ask")
