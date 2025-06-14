@@ -27,7 +27,7 @@ llm_client.py
 test_ask.py
 
 
-build_vectorstore.py
+# build_vectorstore.py
 ask.py
 
 # load_data.py
